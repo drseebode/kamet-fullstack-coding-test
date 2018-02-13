@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.seebode</groupId>
+    <artifactId>kamet-fullstack-coding-test</artifactId>
+    <version>0.1-SNAPSHOT</version>
+    <packaging>war</packaging>
+	
+	<parent>
+        <relativePath>../pom.xml</relativePath>
+        <groupId>com.seebode</groupId>
+        <artifactId>kamet-fullstack-coding-test-root</artifactId>
+        <version>0.0.1-SNAPSHOT</version>
+    </parent>
+
+    <properties>
+        <artifact.name>app</artifact.name>
+        <working.directory>src/main/webapp</working.directory>
+        <test.directory>src/test/javascript</test.directory>
+        <node.version>v8.6.0</node.version>
+        <npm.version>5.4.2</npm.version>
+    </properties>
+
+    <build>
+    <finalName>${artifact.name}</finalName>
+    <plugins>
+        <plugin>
+            <groupId>org.apache.tomcat.maven</groupId>
+            <artifactId>tomcat7-maven-plugin</artifactId>
+            <version>2.2</version>
+            <configuration>
+                <port>11112</port>
+                <uriEncoding>UTF-8</uriEncoding>
+                <!--<httpsPort>8445</httpsPort>
+                <keystoreFile>${user.home}/.keystore</keystoreFile>
+                <keystorePass>changeit</keystorePass>-->
+                <path>/</path>
+            </configuration>
+        </plugin>
+    <plugin>
+        <groupId>com.github.eirslett</groupId>
+        <artifactId>frontend-maven-plugin</artifactId>
+        <version>1.6</version>
+        <executions>
+            <execution>
+                <id>::install node and npm::</id>
+                <goals>
+                    <goal>install-node-and-npm</goal>
+                </goals>
+            </execution>
+            <execution>
+                <id>::npm install::</id>
+                <goals>
+                    <goal>npm</goal>
+                </goals>
+                <configuration>
+                    <arguments>install</arguments>
+                </configuration>
+            </execution>
+            <execution>
+                <id>::npm run postinstall::</id>
+                <goals>
+                    <goal>npm</goal>
+                </goals>
+                <configuration>
+                    <arguments>run postinstall</arguments>
+                </configuration>
+            </execution>
+            <execution>
+                <id>::npm run bundle::</id>
+                <goals>
+                    <goal>npm</goal>
+                </goals>
+                <configuration>
+                    <arguments>run bundle</arguments>
+                </configuration>
+            </execution>
+            <execution>
+                <id>javascript tests</id>
+                <goals>
+                    <goal>karma</goal>
+                </goals>
+
+                <!-- optional: the default plase is "test". Some developers
+                choose to run karma in the "integration-test" phase. -->
+                <phase>test</phase>
+
+                <configuration>
+                    <!-- optional: the default is "karma.conf.js" in your working directory -->
+                    <karmaConfPath>karma.conf.ci.js</karmaConfPath>
+                </configuration>
+            </execution>
+        </executions>
+        <configuration>
+            <nodeVersion>${node.version}</nodeVersion>
+            <npmVersion>${npm.version}</npmVersion>
+            <workingDirectory>${working.directory}</workingDirectory>
+        </configuration>
+    </plugin>
+        <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-war-plugin</artifactId>
+            <configuration>
+                <warSourceExcludes>src/,node/,node_modules/,package.json</warSourceExcludes>
+                <failOnMissingWebXml>false</failOnMissingWebXml>
+                <webResources>
+                    <resource>
+                        <directory>src/main/webapp</directory>
+                        <filtering>false</filtering>
+                        <excludes>
+                            <exclude>src/**</exclude>
+                            <exclude>node/**</exclude>
+                            <exclude>node_modules/**</exclude>
+                            <exclude>package.json</exclude>
+                        </excludes>
+                    </resource>
+                </webResources>
+            </configuration>
+        </plugin>
+        <plugin>
+            <artifactId>maven-clean-plugin</artifactId>
+            <version>3.0.0</version>
+            <configuration>
+                <filesets>
+                    <fileset>
+                        <directory>src/main/webapp/node</directory>
+                    </fileset>
+                    <fileset>
+                        <directory>src/main/webapp/node_modules</directory>
+                    </fileset>
+                    <fileset>
+                        <directory>src/main/webapp/build</directory>
+                    </fileset>
+                </filesets>
+            </configuration>
+        </plugin>
+    </plugins>
+    </build>
+
+</project>
