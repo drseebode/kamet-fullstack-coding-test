@@ -1,1 +1,6 @@
 /kamet-fullstack-coding-test-backend/.mvn
+/.idea
+/kamet-fullstack-coding-test/target
+/kamet-fullstack-coding-test/src/main/webapp/node_modules
+/kamet-fullstack-coding-test/src/main/webapp/build
+/kamet-fullstack-coding-test/src/main/webapp/node

@@ -27,7 +27,6 @@ export const WelcomeComponent = {
 <div id="home-header" class="jumbotron" ng-controller="WelcomeController as welcome">
     <img src="./assets/images/Download.jpg">
     <img src={${myImg} />
-    <h1>Hello, {{welcome.name}}</h1>
     <h1>You selected: {{column}}</h1>
     
     
